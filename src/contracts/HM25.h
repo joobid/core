@@ -7,60 +7,64 @@ struct HM252
 struct HM25 : public ContractBase
 {
 public:
-    struct Echo_input{};
-    struct Echo_output{};
 
-    struct Burn_input{};
-    struct Burn_output{};
-
-    struct GetStats_input {};
-    struct GetStats_output
+    struct SetMilestone_input {};
+    struct SetMilestone_output
     {
-        uint64 numberOfEchoCalls;
-        uint64 numberOfBurnCalls;
+        uint64 lastMilestone;
+    };
+
+    struct GetMilestone_input {};
+    struct GetMilestone_output
+    {
+        uint64 lastMilestone;
+    };
+
+    struct GetBudget_input {};
+    struct GetBudget_output
+    {
+        uint64 budget;
     };
 
 private:
-    uint64 numberOfEchoCalls;
-    uint64 numberOfBurnCalls;
+    uint64 lastMilestone;
+    uint64 budget;
 
     /**
     Send back the invocation amount
-    */
-    PUBLIC_PROCEDURE(Echo)
-        state.numberOfEchoCalls++;
+    
+    PUBLIC_PROCEDURE(PayBudget)
         if (qpi.invocationReward() > 0)
         {
+            state.budget = state.budget - qpi.invocationReward;
             qpi.transfer(qpi.invocator(), qpi.invocationReward());
         }
-    _
-
-    /**
-    * Burn all invocation amount
     */
-    PUBLIC_PROCEDURE(Burn)
-        state.numberOfBurnCalls++;
-        if (qpi.invocationReward() > 0)
-        {
-            qpi.burn(qpi.invocationReward());
-        }
     _
 
-    PUBLIC_FUNCTION(GetStats)
-        output.numberOfBurnCalls = state.numberOfBurnCalls;
-        output.numberOfEchoCalls = state.numberOfEchoCalls;
+    _
+
+    PUBLIC_FUNCTION(SetMilestone)
+        state.lastMilestone = output.lastMilestone;
+
+    PUBLIC_FUNCTION(GetMilestone)
+        output.lastMilestone = state.lastMilestone;
+
+    PUBLIC_FUNCTION(GetBudget)
+        output.budget = state.budget;
     _
 
     REGISTER_USER_FUNCTIONS_AND_PROCEDURES
 
-        REGISTER_USER_PROCEDURE(Echo, 1);
-        REGISTER_USER_PROCEDURE(Burn, 2);
+        /* REGISTER_USER_PROCEDURE(PayBudget, 1); */
 
-        REGISTER_USER_FUNCTION(GetStats, 1);
+        REGISTER_USER_FUNCTION(SetMilestone, 1);
+        REGISTER_USER_FUNCTION(GetMilestone, 2);
+        REGISTER_USER_FUNCTION(GetBudget, 3);
     _
 
     INITIALIZE
-        state.numberOfEchoCalls = 0;
-        state.numberOfBurnCalls = 0;
+        state.lastMilestone = 0;
+        state.budget = 1000;
     _
 };
