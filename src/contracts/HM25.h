@@ -19,8 +19,8 @@ public:
 private:
     uint64 lastMilestone;
 
-    PUBLIC_FUNCTION(SetMilestone)
-        /* state.lastMilestone++; */
+    PUBLIC_PROCEDURE(SetMilestone)
+        state.lastMilestone++;
    _
 
     PUBLIC_FUNCTION(GetMilestone)
@@ -29,8 +29,9 @@ private:
 
     REGISTER_USER_FUNCTIONS_AND_PROCEDURES
 
-        REGISTER_USER_FUNCTION(SetMilestone, 1);
-        REGISTER_USER_FUNCTION(GetMilestone, 2);
+        REGISTER_USER_PROCEDURE(SetMilestone, 1);
+
+        REGISTER_USER_FUNCTION(GetMilestone, 1);
     _
 
     INITIALIZE
