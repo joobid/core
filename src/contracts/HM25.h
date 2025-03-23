@@ -16,9 +16,6 @@ public:
     
 private:
     uint64 lastMilestone;
-    _
-
-    _
 
     PUBLIC_FUNCTION(SetMilestone)
         state.lastMilestone = 123;
