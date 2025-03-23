@@ -11,7 +11,10 @@ public:
     struct SetMilestone_output{};
 
     struct GetMilestone_input{};
-    struct GetMilestone_output{};
+    struct GetMilestone_output{
+    {
+        uint64 lastMilestone;
+    };
     
 private:
     uint64 lastMilestone;
