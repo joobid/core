@@ -7,18 +7,18 @@ struct HM252
 struct HM25 : public ContractBase
 {
 public:
+    struct SetMilestone_input{};
+    struct SetMilestone_output{};
 
-    struct SetMilestone_input {};
-    struct SetMilestone_output {};
-
-    struct GetMilestone_input {};
-    struct GetMilestone_output {};
+    struct GetMilestone_input{};
+    struct GetMilestone_output{};
     
 private:
     uint64 lastMilestone;
 
     PUBLIC_FUNCTION(SetMilestone)
         state.lastMilestone = 123;
+   _
 
     PUBLIC_FUNCTION(GetMilestone)
         output.lastMilestone = state.lastMilestone;
